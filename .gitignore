@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+backend/storage/uploads/
+backend/storage/chroma/
+backend/storage/app.db
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+.env

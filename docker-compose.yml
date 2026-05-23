@@ -1,0 +1,46 @@
+services:
+  backend:
+    build: ./backend
+    container_name: docqa-backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@postgres:5432/docqa
+      SECRET_KEY: change-me
+      CORS_ORIGINS: http://localhost:5173
+      EMBEDDING_PROVIDER: hash
+      LLM_PROVIDER: fallback
+      UPLOADS_DIR: /app/storage/uploads
+      CHROMA_PERSIST_DIRECTORY: /app/storage/chroma
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/storage:/app/storage
+
+  frontend:
+    build: ./frontend
+    container_name: docqa-frontend
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000/api/v1
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  postgres:
+    image: postgres:17
+    container_name: docqa-postgres
+    environment:
+      POSTGRES_DB: docqa
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
