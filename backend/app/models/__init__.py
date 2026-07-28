@@ -1,0 +1,15 @@
+from app.models.chat_message import ChatMessage
+from app.models.chat_session import ChatSession
+from app.models.document import Document
+from app.models.document_access import DocumentAccess
+from app.models.document_chunk import DocumentChunk
+from app.models.user import User
+
+__all__ = [
+    "ChatMessage",
+    "ChatSession",
+    "Document",
+    "DocumentAccess",
+    "DocumentChunk",
+    "User",
+]
