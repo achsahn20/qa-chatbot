@@ -1,61 +1,73 @@
-# Document Q&A Chatbot using RAG, FastAPI, PostgreSQL, and Vector Database
+# React + TypeScript + Vite
 
-Production-style portfolio project for uploading PDFs, indexing them into a vector store, and answering natural-language questions with grounded citations.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Stack
+Currently, two official plugins are available:
 
-- Frontend: React, TypeScript, Tailwind CSS, React Router, Axios
-- Backend: FastAPI, SQLAlchemy, JWT auth, PyMuPDF
-- Data: PostgreSQL-compatible SQLAlchemy models, ChromaDB vector store
-- AI: pluggable embedding and answer-generation providers with local fallbacks
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Key Features
+## React Compiler
 
-- User signup, login, and protected workspace routes
-- PDF upload and background processing
-- Text extraction, chunking, embeddings, and vector indexing
-- Citation-backed Q&A with page number and source quotes
-- Chat sessions and message history
-- Admin dashboard for top-level usage insight
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Local Run
+## Expanding the ESLint configuration
 
-### Backend
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```bash
-cd backend
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-copy .env.example .env
-uvicorn app.main:app --reload
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-### Frontend
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```bash
-cd frontend
-copy .env.example .env
-npm install
-npm run dev
-```
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-The frontend expects the backend at `http://localhost:8000/api/v1`.
-
-## Demo Admin
-
-- Email: `admin@example.com`
-- Password: `Admin123!`
-
-## Tests
-
-```bash
-cd backend
-pytest
-```
-
-## Docker
-
-```bash
-docker compose up --build
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
